@@ -30,7 +30,11 @@
                     <td>{{$data->nama_rombongan}}</td>
                     <td>{{$data->jumlah_pax}}</td>
                     <td>{{$data->no_hp}}</td>
-                    <td>{{$data->status}}</td>
+                    @if($data->transaksi)
+                    <td>{{$data->transaksi->status}}</td>
+                    @else
+                    <td>Belum ada transaksi</td>
+                    @endif
                     <td>
                         <a href="/pemesanan/rincian/{{$data->id}}" class="btn btn-sm btn-danger">Detail</a>
                     </td>

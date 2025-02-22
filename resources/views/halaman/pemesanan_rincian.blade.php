@@ -14,7 +14,7 @@
                 DESTINASI   : {{$paket->destinasi}} <br>
                 FASILITAS   : {{$paket->fasilitas}} <br>
                 BUS         : {{$paket->bus}} <br>
-                TOTAL_HARGA       : Rp{{number_format(($paket->harga * $pemesanan->jumlah_pax), 0, '.', '.')}} <br>
+                TOTAL_HARGA       : Rp{{number_format(($pemesanan->harga * $pemesanan->jumlah_pax), 0, '.', '.')}} <br>
             </p>
         </div>
         <div class="col-md-8">
@@ -34,14 +34,34 @@
         <div class="card">
             <div class="card-body">
                 <h5>Upload Bukti Pembayaran</h5>
-                <b>Status Pembayaran: {{$pemesanan->status}}</b>
+                @if($pemesanan->transaksi)
+                <b>Status Pembayaran: {{$pemesanan->transaksi->status}}</b>
+                @else
+                <b>Anda Belum melakukan transaksi</b>
+                @endif
                 <br>
                 
 
                 @if(Auth::user()->level=='konsumen')
-                    @if($pemesanan->status =='Belum Bayar')
+                    @if($pemesanan->transaksi)
+                        @if($pemesanan->transaksi->status =='Belum Bayar')
+                        <form action="/pemesanan/pembayaran/{{$pemesanan->id}}" method="post" enctype="multipart/form-data">
+                            <div class="input-group">
+                                @csrf
+                                <input type="file" name="bukti_pembayaran" class="form-control">
+                                <button class="btn btn-danger">Upload</button>
+                            </div>
+                        </form>
+                        @else
+                        <img src="{{asset('upload/pemesanan/'.$pemesanan->transaksi->bukti_pembayaran)}}" class="w-50   rounded" alt="Image">
+                        <p>
+                            Anda sudah melalukan upload bukti pembayaran silahkan konformasi pembayaran dengan tombol berikut: 
+                            <a href="https://wa.me/62895329933627?text=saya ingin melakukan konfirmasi pembayaran paket {{ $paket->judul }} dengan nama rombangan {{ $pemesanan->nama_rombongan}} akan berangkat pada tanggal {{$pemesanan->tanggal_berangkat}} dengan jumlah pax sebanyak {{$pemesanan->jumlah_pax}}" target="_blank" class="btn btn-sm btn-success">Hub Whastapp</a>
+                        </p>
+                        @endif
+                    @else
                     <p>
-                        Silahkan Lakukan Pembayaran Sebesar <b>Rp{{number_format(($paket->harga * $pemesanan->jumlah_pax), 0, '.', '.')}}</b>
+                        Silahkan Lakukan Pembayaran Sebesar <b>Rp{{number_format(($pemesanan->harga * $pemesanan->jumlah_pax), 0, '.', '.')}}</b>
                         Ke Nomor Rekening Berikut : 12345678 (BRI) / 23554545(BCA). <br>
                         Kemudian Upload Bukti Pembayaran Dibawah
                     </p>
@@ -52,21 +72,17 @@
                             <button class="btn btn-danger">Upload</button>
                         </div>
                     </form>
-                    @else
-                    <img src="{{asset('upload/pemesanan/'.$pemesanan->bukti_pembayaran)}}" class="w-50   rounded" alt="Image">
-                    <p>
-                        Anda sudah melalukan upload bukti pembayaran silahkan konformasi pembayaran dengan tombol berikut: 
-                        <a href="https://wa.me/62895329933627?text=saya ingin melakukan konfirmasi pembayaran paket {{ $paket->judul }} dengan nama rombangan {{ $pemesanan->nama_rombongan}} akan berangkat pada tanggal {{$pemesanan->tanggal_berangkat}} dengan jumlah pax sebanyak {{$pemesanan->jumlah_pax}}" target="_blank" class="btn btn-sm btn-success">Hub Whastapp</a>
-                    </p>
                     @endif
                 @elseif(Auth::user()->level=='bendahara')
-                    @if($pemesanan->status !='Belum Bayar')
-                    <img src="{{asset('upload/pemesanan/'.$pemesanan->bukti_pembayaran)}}" class="w-50   rounded" alt="Image">
-                    <form action="/manajemen/pemesanan/status/{{$pemesanan->id}}" method="post">
-                        @csrf
-                        <button name="terima" class="btn btn-success">Terima</button>
-                        <button name="tolak" class="btn btn-danger">Tolak</button>
-                    </form>
+                    @if($pemesanan->transaksi)
+                        @if($pemesanan->transaksi->status !='Belum Bayar')
+                        <img src="{{asset('upload/pemesanan/'.$pemesanan->transaksi->bukti_pembayaran)}}" class="w-50   rounded" alt="Image">
+                        <form action="/manajemen/pemesanan/status/{{$pemesanan->id}}" method="post">
+                            @csrf
+                            <button name="terima" class="btn btn-success">Terima</button>
+                            <button name="tolak" class="btn btn-danger">Tolak</button>
+                        </form>
+                        @endif
                     @endif
                 @endif
             </div>

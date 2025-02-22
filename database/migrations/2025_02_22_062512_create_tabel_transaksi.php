@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pemesanan', function (Blueprint $table) {
+        Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreignId('paket_id')->references('id')->on('paket')->cascadeOnDelete();
-            $table->integer('harga');
-            $table->date('tanggal_berangkat');
-            $table->string('nama_rombongan');
-            $table->integer('jumlah_pax');
-            $table->string('no_hp');
+            $table->foreignId('pemesanan_id')->references('id')->on('pemesanan')->cascadeOnDelete();
+            $table->string('no_invoice'); 
+            $table->string('status')->default('Belum Bayar'); //Belum bayar, sedang diproses, lunas
+            $table->string('bukti_pembayaran')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pemesanan');
+        Schema::dropIfExists('transaksi');
     }
 };

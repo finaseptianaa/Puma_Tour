@@ -31,6 +31,7 @@
             <thead>
                 <tr>
                     <th>no</th>
+                    <th>no invoice</th>
                     <th>Nama</th>
                     <th>Paket</th>
                     <th>Tanggal Berangkat</th>
@@ -45,6 +46,11 @@
                 @foreach($pemesanan as $no=>$data)
                 <tr>
                     <td>{{$no+1}}</td>
+                    @if($data->transaksi)
+                    <td>{{$data->transaksi->no_invoice}}</td>
+                    @else
+                    <td>-</td>
+                    @endif
                     <td>{{$data->user->nama}}</td>
                     <td>{{$data->paket->judul}}</td>
                     <td>{{$data->tanggal_berangkat}}</td>
@@ -52,7 +58,11 @@
                     <td>{{$data->jumlah_pax}}</td>
                     <td>{{$data->harga}}</td>
                     <td>{{$data->no_hp}}</td>
-                    <td>{{$data->status}}</td>
+                    @if($data->transaksi)
+                    <td>{{$data->transaksi->status}}</td>
+                    @else
+                    <td>Belum ada transaksi</td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>

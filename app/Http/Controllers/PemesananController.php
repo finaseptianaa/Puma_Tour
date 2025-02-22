@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Paket;
 use App\Models\Pemesanan;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,14 +23,17 @@ class PemesananController extends Controller
 
     function manajemenPemesananStatus(Request $request, $id){
         $pemesanan = Pemesanan::find($id);
+        $transaksi = $pemesanan->transaksi;
 
-        if ($request->has('terima')) {
-            $pemesanan->status = 'Lunas';
-        }else{
-            $pemesanan->status = 'Belum Bayar';
-            unlink(public_path("upload/pemesanan/".$pemesanan->bukti_pembayaran));
+        if ($transaksi) {
+            if ($request->has('terima')) {
+                $transaksi->status = 'Lunas';
+            }else{
+                $transaksi->status = 'Belum Bayar';
+                unlink(public_path("upload/pemesanan/".$transaksi->bukti_pembayaran));
+            }
+            $transaksi->update();
         }
-        $pemesanan->update();
 
         return redirect('/manajemen/pemesanan');
     }
@@ -56,9 +60,21 @@ class PemesananController extends Controller
             $bukti_pembayaran->move($folder, $nama_bukti_pembayaran);
         }
 
-        $pemesanan->bukti_pembayaran = $nama_bukti_pembayaran;
-        $pemesanan->status = "Sedang Diproses";
-        $pemesanan->update();
+        $transaksi = $pemesanan->transaksi;
+
+        if ($transaksi) {
+            $transaksi->bukti_pembayaran = $nama_bukti_pembayaran;
+            $transaksi->status = "Sedang Diproses";
+            $transaksi->update();
+        } else {
+            $transaksi = new Transaksi();
+            $transaksi->user_id = auth()->user()->id;
+            $transaksi->pemesanan_id = $pemesanan->id;
+            $transaksi->no_invoice = 'INV/'.date('dmY').'/'.$pemesanan->id;
+            $transaksi->bukti_pembayaran = $nama_bukti_pembayaran;
+            $transaksi->status = "Sedang Diproses";
+            $transaksi->save();
+        }
 
         return redirect()->back();
     }
@@ -71,6 +87,7 @@ class PemesananController extends Controller
         $pemesanan->paket_id = $paket->id;
         $pemesanan->user_id = $user->id;
         $pemesanan->tanggal_berangkat = $request->tanggal_berangkat;
+        $pemesanan->harga = $paket->harga;
         $pemesanan->nama_rombongan = $request->nama_rombongan;
         $pemesanan->jumlah_pax = $request->jumlah_pax;
         $pemesanan->no_hp = $request->no_hp;
