@@ -13,11 +13,14 @@ class LaporanController extends Controller
         $akhir = $request->akhir ? $request->akhir : date('Y-m-d');
 
         //mencari pemesanan berdasarkan tanggal 
-        $pemesanan = Pemesanan::whereDate('created_at' , '<=' , $mulai) 
-                                ->whereDate('created_at' , '>=' , $akhir)
+        $pemesanan = Pemesanan::whereDate('created_at' , '>=' , $mulai) 
+                                ->whereDate('created_at' , '<=' , $akhir)
                                 ->orderBy('id' , 'desc')
                                 ->get(); 
 
+        if ($request->has('cetak')) {
+            return view('halaman.laporan_cetak', compact('pemesanan', 'mulai' , 'akhir'));
+        }
         return view('halaman.laporan', compact('pemesanan', 'mulai' , 'akhir'));
     }
 }
