@@ -48,32 +48,35 @@
                     </a>
                 </li>
                 @endif
-                @if(Auth::user()->level != 'konsumen')
+                @if(Auth::user()->level == 'admin')
                 <li class="sidebar-item  ">
                     <a href="/paket" class='sidebar-link'>
                         <i class="bi bi-airplane"></i>
                         <span>Paket Wisata</span>
                     </a>
                 </li>
+                @endif
+                @if(Auth::user()->level == 'bendahara')
                 <li class="sidebar-item  ">
                     <a href="/manajemen/pemesanan" class='sidebar-link'>
                         <i class="bi bi-envelope-paper"></i>
                         <span>Manajemen Pemesanan</span>
                     </a>
                 </li>
+                @endif
                 <li class="sidebar-item  ">
                     <a href="/laporan" class='sidebar-link'>
                         <i class="bi bi-journal-text"></i>
                         <span>Laporan Pemesanan</span>
                     </a>
                 </li>
+                @if(Auth::user()->level == 'admin')
                 <li class="sidebar-item  ">
                     <a href="/pengguna" class='sidebar-link'>
                         <i class="bi bi-people"></i>
                         <span>Manajemen Pengguna</span>
                     </a>
                 </li>
-
                 @endif
          
         </ul>
@@ -90,47 +93,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav d-flex align-items-center navbar-light ml-auto">
-                        <li class="dropdown nav-icon">
-                            <a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle nav-link-lg nav-link-user">
-                                <div class="d-lg-inline-block">
-                                    <i data-feather="bell"></i>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-large">
-                                <h6 class='py-2 px-4'>Notifications</h6>
-                                <ul class="list-group rounded-none">
-                                    <li class="list-group-item border-0 align-items-start">
-                                        <div class="avatar bg-success mr-3">
-                                            <span class="avatar-content"><i data-feather="shopping-cart"></i></span>
-                                        </div>
-                                        <div>
-                                            <h6 class='text-bold'>New Order</h6>
-                                            <p class='text-xs'>
-                                                An order made by Ahmad Saugi for product Samsung Galaxy S69
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="dropdown nav-icon mr-2">
-                            <a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle nav-link-lg nav-link-user">
-                                <div class="d-lg-inline-block">
-                                    <i data-feather="mail"></i>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
-                                <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a>
-                                <div class="dropdown-divider"></div>
-
-                                <form action="/logout" method="post">
-                                    @csrf
-                                    <button class="dropdown-item" ><i data-feather="log-out"></i> Logout</button>
-                                </form>
-                            </div>
-                        </li>
                         <li class="dropdown">
                             <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                                 <div class="avatar mr-1">
@@ -138,9 +100,7 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
-                                <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a>
+                                <a class="dropdown-item" href="#"><i data-feather="user"></i> {{ Auth::user()->nama }}</a>
                                 <div class="dropdown-divider"></div>
                                 
                                 <form action="/logout" method="post">
