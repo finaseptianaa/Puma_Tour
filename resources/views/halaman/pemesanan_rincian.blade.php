@@ -79,13 +79,16 @@
                 @if($pemesanan->transaksi)
                     <b>Status Pembayaran: {{$pemesanan->transaksi->status}}</b>
                 @else
-                    <b>Anda Belum melakukan transaksi</b>
+                    <b>Anda Belum melakukan Pembayaran DP</b>
                 @endif
                 <br>
 
                 @if(Auth::user()->level == 'konsumen')
                     @if($pemesanan->transaksi)
-                        @if($pemesanan->transaksi->status == 'Belum Bayar')
+                        @if($pemesanan->transaksi->status == 'DP Lunas')
+                        <p>Silakan lakukan pembayaran pelunasan sebesar <b>Rp{{number_format((($pemesanan->harga * $pemesanan->jumlah_pax)-($pemesanan->harga * $pemesanan->jumlah_pax) * 30/100), 0, '.', '.')}}</b> ke nomor rekening berikut: 12345678 (BRI) / 23554545 (BCA).</p>
+                        @endif
+                        @if($pemesanan->transaksi->status == 'Belum Bayar' || $pemesanan->transaksi->status == 'DP Lunas' )
                             <form action="/pemesanan/pembayaran/{{$pemesanan->id}}" method="post" enctype="multipart/form-data">
                                 <div class="input-group">
                                     @csrf
@@ -94,26 +97,52 @@
                                 </div>
                             </form>
                         @else
+                            @if($pemesanan->transaksi->bukti_pembayaran)
                             <img src="{{asset('upload/pemesanan/'.$pemesanan->transaksi->bukti_pembayaran)}}" class="w-50 rounded" alt="Image">
-                            <p>Anda sudah melalukan upload bukti pembayaran. Silakan konfirmasi pembayaran dengan tombol berikut:</p>
-                            <a href="https://wa.me/62895329933627?text=saya ingin melakukan konfirmasi pembayaran paket {{ $paket->judul }} dengan nama rombangan {{ $pemesanan->nama_rombongan}} akan berangkat pada tanggal {{$pemesanan->tanggal_berangkat}} dengan jumlah pax sebanyak {{$pemesanan->jumlah_pax}}" target="_blank" class="btn btn-success btn-sm">Hubungi WhatsApp</a>
+                            <p>Anda sudah melalukan upload bukti pembayaran Pelunasan. Silakan konfirmasi pembayaran dengan tombol berikut:</p>
+                            <a href="https://wa.me/62895329933627?text=saya ingin melakukan konfirmasi pembayaran Pelunasan paket {{ $paket->judul }} dengan nama rombangan {{ $pemesanan->nama_rombongan}} akan berangkat pada tanggal {{$pemesanan->tanggal_berangkat}} dengan jumlah pax sebanyak {{$pemesanan->jumlah_pax}}" target="_blank" class="btn btn-success btn-sm">Hubungi WhatsApp</a>
+                            @else
+                            <img src="{{asset('upload/pemesanan/'.$pemesanan->transaksi->bukti_dp)}}" class="w-50 rounded" alt="Image">
+                            <p>Anda sudah melalukan upload bukti pembayaran DP. Silakan konfirmasi pembayaran dengan tombol berikut:</p>
+                            <a href="https://wa.me/62895329933627?text=saya ingin melakukan konfirmasi pembayaran DP paket {{ $paket->judul }} dengan nama rombangan {{ $pemesanan->nama_rombongan}} akan berangkat pada tanggal {{$pemesanan->tanggal_berangkat}} dengan jumlah pax sebanyak {{$pemesanan->jumlah_pax}}" target="_blank" class="btn btn-success btn-sm">Hubungi WhatsApp</a>
+                            @endif
                         @endif
                     @else
-                        <p>Silakan lakukan pembayaran sebesar <b>Rp{{number_format(($pemesanan->harga * $pemesanan->jumlah_pax), 0, '.', '.')}}</b> ke nomor rekening berikut: 12345678 (BRI) / 23554545 (BCA).</p>
+                        <!-- Baru bayar DP -->
+                        <p>Silakan lakukan pembayaran DP sebesar <b>Rp{{number_format((($pemesanan->harga * $pemesanan->jumlah_pax) * 30/100), 0, '.', '.')}}</b> ke nomor rekening berikut: 12345678 (BRI) / 23554545 (BCA).</p>
                         <form action="/pemesanan/pembayaran/{{$pemesanan->id}}" method="post" enctype="multipart/form-data">
                             <div class="input-group">
                                 @csrf
-                                <input type="file" name="bukti_pembayaran" class="form-control">
+                                <input type="file" name="bukti_dp" class="form-control">
                                 <button class="btn btn-danger">Upload</button>
                             </div>
                         </form>
                     @endif
                 @elseif(Auth::user()->level == 'bendahara')
                     @if($pemesanan->transaksi)
-                        @if($pemesanan->transaksi->status != 'Belum Bayar')
-                            <img src="{{asset('upload/pemesanan/'.$pemesanan->transaksi->bukti_pembayaran)}}" class="w-50 rounded" alt="Image">
+                        @if($pemesanan->transaksi->bukti_dp)
+                            <h3>BUKTI DP</h3>
+                            <img src="{{asset('upload/pemesanan/'.$pemesanan->transaksi->bukti_dp)}}" class="w-50 rounded" alt="Image">
+                        @endif
+                        
+                        @if($pemesanan->transaksi->status == 'DP Sedang Diproses')
                             <form action="/manajemen/pemesanan/status/{{$pemesanan->id}}" method="post">
                                 @csrf
+                                <input type="hidden" name="jenis" value="dp">
+                                <button name="terima" class="btn btn-success">Terima</button>
+                                <button name="tolak" class="btn btn-danger">Tolak</button>
+                            </form>
+                        @endif
+
+                        @if($pemesanan->transaksi->bukti_pembayaran)
+                            <h3>BUKTI PELUNASAN</h3>
+                            <img src="{{asset('upload/pemesanan/'.$pemesanan->transaksi->bukti_pembayaran)}}" class="w-50 rounded" alt="Image">
+                        @endif
+                        
+                        @if($pemesanan->transaksi->status == 'Pelunasan Sedang Diproses')
+                            <form action="/manajemen/pemesanan/status/{{$pemesanan->id}}" method="post">
+                                @csrf
+                                <input type="hidden" name="jenis" value="pelunasan">
                                 <button name="terima" class="btn btn-success">Terima</button>
                                 <button name="tolak" class="btn btn-danger">Tolak</button>
                             </form>

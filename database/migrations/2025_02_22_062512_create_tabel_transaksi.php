@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('pemesanan_id')->references('id')->on('pemesanan')->cascadeOnDelete();
             $table->string('no_invoice'); 
-            $table->string('status')->default('Belum Bayar'); //Belum bayar, sedang diproses, lunas
+            $table->string('status')->default('Belum Bayar'); //Belum bayar, Dp sedang diproses, Dp lunas, Pelunasan Sedang diproses, Lunas
             $table->string('bukti_pembayaran')->nullable();
             $table->timestamps();
         });
