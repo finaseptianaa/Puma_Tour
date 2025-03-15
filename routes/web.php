@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KuponController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PaketController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/submit',[AuthController::class,'loginSubmit']);
     Route::get('/registrasi',[AuthController::class,'registrasi'])->name('registrasi');
     Route::post('/registrasi/submit',[AuthController::class,'registrasiSubmit']);
+    
+        Route::get('/password/reset', [PasswordResetController::class, 'showResetRequestForm'])->name('password.request');
+    Route::post('/password/email', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/password/reset/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.update');
+
 });
 
 Route::middleware('auth')->group(function () {

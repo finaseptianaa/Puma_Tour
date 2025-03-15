@@ -63,6 +63,9 @@
                                 <a href="/registrasi" style="color: #D5006D;">Belum Mempunyai Akun?</a>
                             </div>
                         </div>
+                        <div>
+                            <a href="/password/reset">Lupa Password</a>
+                        </div>
                         <div class="clearfix">
                                 <button class="btn float-right" style="background-color: #D5006D; border-color: #D5006D; color: white;">Login</button>
                         </div>
