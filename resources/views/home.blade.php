@@ -104,7 +104,7 @@
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
-                        <img src="img/home.jpg" class="img-fluid" alt="Image">
+                        <img src="img/galeri-2.jpg" class="img-fluid" alt="Image">
                         <div class="carousel-caption">
                             <div class="text-center p-4" style="max-width: 900px;">
                                 <h4 class="text-white text-uppercase fw-bold mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.1s">LIBURAN SERU DAN BERKESAN BERSAMA KAMI</h4>
@@ -115,7 +115,7 @@
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="img/home.jpg" class="img-fluid" alt="Image">
+                        <img src="img/galeri-2.jpg" class="img-fluid" alt="Image">
                         <div class="carousel-caption">
                             <div class="text-center p-4" style="max-width: 900px;">
                                 <h5 class="text-white text-uppercase fw-bold mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.1s"> LIBURAN SERU DAN BERKESAN BERSAMA KAMI</h5>
@@ -174,7 +174,6 @@
                                 <p class="mb-0"><i class=></i></p>
                             </div>
                         </div>
-                        <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Read More</a>
                     </div>
                 </div>
             </div>

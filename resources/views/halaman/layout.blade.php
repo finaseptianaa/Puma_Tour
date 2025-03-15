@@ -64,17 +64,27 @@
                     </a>
                 </li>
                 @endif
+                @if(Auth::user()->level != 'konsumen')
                 <li class="sidebar-item  ">
                     <a href="/laporan" class='sidebar-link'>
                         <i class="bi bi-journal-text"></i>
                         <span>Laporan Pemesanan</span>
                     </a>
                 </li>
+                @endif
                 @if(Auth::user()->level == 'admin')
                 <li class="sidebar-item  ">
                     <a href="/pengguna" class='sidebar-link'>
                         <i class="bi bi-people"></i>
                         <span>Manajemen Pengguna</span>
+                    </a>
+                </li>
+                @endif
+                @if(Auth::user()->level == 'admin')
+                <li class="sidebar-item  ">
+                    <a href="/kupon" class='sidebar-link'>
+                        <i class="bi bi-credit-card"></i>
+                        <span>Cek Kupon</span>
                     </a>
                 </li>
                 @endif

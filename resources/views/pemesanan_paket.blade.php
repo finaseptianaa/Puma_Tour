@@ -77,16 +77,20 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">Tentang Kami</a>
-                        <a href="about.html" class="nav-item nav-link">Paket Wisata</a>
-                        <a href="service.html" class="nav-item nav-link">Galeri</a>
+                        <a href="/" class="nav-item nav-link active">Home</a>
+                        <a href="/#tentang_kami" class="nav-item nav-link">Tentang Kami</a>
+                        <a href="/#paket_wisata" class="nav-item nav-link">Paket Wisata</a>
+                        <a href="/#galeri" class="nav-item nav-link">Galeri</a>
                         <div class="nav-item dropdown">
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <a href="/#contact" class="nav-item nav-link">Contact</a>
                     </div>
+                    @if(Auth::check())
+                    <a href="/dashboard">Halo, {{Auth::user()->nama}}</a>
+                    @else
                     <a href="/registrasi" class="btn btn-primary border-secondary rounded-pill py-1 px-3 px-lg-2 mb-2 mb-md-2 mb-lg-0">Registrasi</a>
                     <a href="/login" class="btn btn-primary border-secondary rounded-pill py-1 px-3 px-lg-2 mb-2 mb-md-2 mb-lg-0">Login</a>
+                    @endif
                 </div>
             </nav>
         </div>
@@ -113,12 +117,36 @@
                                 DESTINASI   : {{$paket->destinasi}} <br>
                                 FASILITAS   : {{$paket->fasilitas}} <br>
                                 BUS         : {{$paket->bus}} <br>
-                                HARGA       : {{$paket->harga}} <br>
+                                HARGA       :Rp {{number_format($paket->harga,0,'.','.')}} <br>
+                                @if($kupon)
+                                POTONGAN HARGA       : Rp{{number_format($kupon->potongan,0,'.','.')}} <br>
+                                @endif
                             </p>
+                            @if($kupon)
+                                <div class="alert alert-success">
+                                    SELAMAT ANDA MENDAPATKAN POTONGAN HARGA SEBESAR Rp{{number_format($kupon->potongan,0,'.','.')}}
+                                </div>
+                            @endif
+
+                            <h5>Tawar Harga</h5>
+                            <p>
+                                Untuk mendapatkan penawaran harga terbaik dari kami, silahkan hubungi nomor berikut 
+                                <a href="https://wa.me/62895329933627" target="_blank" >0895329933627</a>, kemudian masukkan
+                                kode dibawah jika sudah mendapatkan kode nya dari kami.
+                            </p>
+                            <form action="" class="mb-4">
+                                <div class="input-group">
+                                    <input type="text" name="kode" class="form-control" placeholder="Masukkan kode" required>
+                                    <button class="btn btn-info">Cek Potongan Harga</button>
+                                </div>
+                            </form>
 
                             <h5>Formulir Pemesanan</h5>
                             <form action="/pemesanan/paket/{{$paket->id}}/submit" method="post">
                                 @csrf
+                                @if($kupon)
+                                    <input type="hidden" name="kode" value="{{$kupon->kode}}">
+                                @endif
                                 <label>Tanggal Berangkat</label>
                                 <input type="date" name="tanggal_berangkat" class="form-control">
                                 <label>Nama Rombongan</label>
@@ -129,7 +157,6 @@
                                 <input type="text" name="no_hp" class="form-control">
 
                                 <button class="btn btn-danger mt-3">Pesan sekarang</button>
-                                <a href="https://wa.me/62895329933627" target="_blank" class="btn btn-success mt-3">Tawar Harga</a>
                             </form>
                         </div>
                     </div>

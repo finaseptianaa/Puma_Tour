@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KuponController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\PemesananController;
@@ -46,7 +47,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengguna/edit/{id}',[PenggunaController::class,'edit']);
     Route::post('/pengguna/update/{id}',[PenggunaController::class,'update']);
 
+    Route::get('/kupon',[KuponController::class,'tampil']);
+    Route::get('/kupon/tambah',[KuponController::class,'tambah']);
+    Route::post('/kupon/submit',[KuponController::class,'submit']);
+    Route::post('/kupon/hapus/{id}',[KuponController::class,'hapus']);
+    Route::get('/kupon/edit/{id}',[KuponController::class,'edit']);
+    Route::post('/kupon/update/{id}',[KuponController::class,'update']);
+
     //buat konsumen
     Route::get('/pemesanan/paket/{id}', [PemesananController::class, 'pemesananPaket']);
+    Route::get('/pemesanan/invoice/{id}', [PemesananController::class, 'pemesananInvoice']);
     Route::post('/pemesanan/paket/{id}/submit', [PemesananController::class, 'pemesananPaketSubmit']);
 });
