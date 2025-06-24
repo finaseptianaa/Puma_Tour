@@ -132,7 +132,7 @@
                             <p>
                                 Untuk mendapatkan penawaran harga terbaik dari kami, silahkan hubungi nomor berikut 
                                 <a href="https://wa.me/62895329933627" target="_blank" >0895329933627</a>, kemudian masukkan
-                                kode dibawah jika sudah mendapatkan kode nya dari kami.
+                                kode dibawah jika sudah mendapatkan kode nya dari kami. Potongan Harga Tidak Berlaku Jika Jumlah Peserta Dibawah 50 orang
                             </p>
                             <form action="" class="mb-4">
                                 <div class="input-group">

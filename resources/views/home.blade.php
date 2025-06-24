@@ -82,7 +82,7 @@
                         <a href="#galeri" class="nav-item nav-link">Galeri</a>
                         <div class="nav-item dropdown">
                         </div>
-                        <a href="#contact" class="nav-item nav-link">Contact</a>
+                        <a href="#kontak" class="nav-item nav-link">kontak</a>
                     </div>
                     @if(Auth::check())
                     <a href="/dashboard">Halo, {{Auth::user()->nama}}</a>
@@ -576,12 +576,12 @@
 
 
         <!-- CONTACT -->
-        <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s" id='contact'>
+        <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s" id='kontak'>
             <div class="container py-5">
                 <div class="row g-5">
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="text-secondary mb-4">Contact Info</h4>
+                            <h4 class="text-secondary mb-4">Kontak Info</h4>
                             <a href=""><i class="fa fa-map-marker-alt me-2"></i>Jalan Suttan Dumas No. A8-A9 Metro Selatan Kota Metro Lampung</a>
                             <a href=""><i class="fas fa-envelope me-2"></i>pumatourlampung@gmail.com</a>
                             <a href=""><i class="fas fa-phone me-2"></i>0821-1444-4494</a>

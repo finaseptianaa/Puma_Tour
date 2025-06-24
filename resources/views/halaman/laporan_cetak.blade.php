@@ -105,5 +105,16 @@
             </tbody>
         </table>
     </div>
+    <table style="float: right; margin-top: 20px;">
+        <tr>
+            <td>Metro, {{ date('d/m/Y') }}</td>
+        </tr>
+        <tr style="height: 50px;">
+            <td></td>
+        </tr>
+        <tr>
+            <td>Bendahara</td>
+        </tr>
+    </table>
 </body>
 </html>

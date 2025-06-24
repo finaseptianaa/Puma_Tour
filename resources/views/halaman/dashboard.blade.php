@@ -9,7 +9,7 @@
         </p>
     </div>
 </div>
-
+@if(Auth::user()->level != 'konsumen')
 <section class="section">
     <div class="row my-4">
         <div class="col-md-4">
@@ -38,5 +38,5 @@
         </div>
     </div>
 </section>
-
+@endif
 @endsection

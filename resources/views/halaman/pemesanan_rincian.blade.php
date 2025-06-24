@@ -110,6 +110,7 @@
                     @else
                         <!-- Baru bayar DP -->
                         <p>Silakan lakukan pembayaran DP sebesar <b>Rp{{number_format((($pemesanan->harga * $pemesanan->jumlah_pax) * 30/100), 0, '.', '.')}}</b> ke nomor rekening berikut: 12345678 (BRI) / 23554545 (BCA).</p>
+                        <p>Dengan batas maksimal pembayaran 24 jam</p>
                         <form action="/pemesanan/pembayaran/{{$pemesanan->id}}" method="post" enctype="multipart/form-data">
                             <div class="input-group">
                                 @csrf

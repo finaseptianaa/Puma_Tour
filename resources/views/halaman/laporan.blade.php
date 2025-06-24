@@ -16,6 +16,7 @@
                 <label >Tanggal akhir</label>
                 <input type="date" name="akhir" value="{{request('akhir') ? request('akhir') : $akhir}}" class="form-control">
             </div>
+            @if(Auth::user()->level != 'direktur')
             <div class="mr-2">
                 <button class="btn btn-primary">filter</button>
                 <button class="btn btn-warning" name="cetak">
@@ -23,6 +24,7 @@
                     Cetak
                 </button>
             </div>
+            @endif
         </div>
     </form>
 
